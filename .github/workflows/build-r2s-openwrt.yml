@@ -28,7 +28,7 @@ env:
 
 jobs:
   Build:
-    runs-on: project-r2s
+    runs-on: ubuntu-18.04
 
     outputs:
       PLATFORM: ${{ steps.compile.outputs.PLATFORM }}
