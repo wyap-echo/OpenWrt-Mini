@@ -23,6 +23,7 @@ env:
   DIY_SH: scripts/project-openwrt.sh
   UPLOAD_WETRANSFER: true
   UPLOAD_COWTRANSFER: true
+  TZ: Asia/Shanghai
 
 jobs:
   Build:
