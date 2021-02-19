@@ -10,10 +10,9 @@ name: Build NanoPi R2S OpenWrt
 
 on:
   repository_dispatch:
-    types: [project, r2s]
   workflow_dispatch:
   schedule:
-    - cron: 0 18 * * *
+    - cron: 0 12 * * 2,4,6
 #  watch:
 #    types: started
 
@@ -48,20 +47,24 @@ jobs:
           sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-1804)
           sudo -E apt-get -qq autoremove --purge
           sudo -E apt-get -qq clean
+
       - name: Clone Source Code
         run: |
           df -hT $PWD
           git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
+
       - name: Update Feeds
         id: update
         run: |
           cd openwrt
           echo "OPENWRTROOT=$PWD" >> $GITHUB_ENV
           ./scripts/feeds update -a
+
       - name: Install Feeds
         run: |
           cd $OPENWRTROOT
           ./scripts/feeds install -a
+
       - name: Load Custom Configuration
         run: |
           [ -e files ] && mv files $OPENWRTROOT/files
@@ -72,6 +75,7 @@ jobs:
           ../$DIY_SH
           ../scripts/preset-clash-core.sh armv8
           ../scripts/preset-terminal-tools.sh
+
       - name: Download All Packages
         id: package
         run: |
@@ -82,6 +86,7 @@ jobs:
           make download -j$(nproc)
           find dl -size -1024c -exec ls -l {} \;
           find dl -size -1024c -exec rm -f {} \;
+
       - name: Compile Firmware Packages
         id: compile
         run: |
@@ -112,6 +117,7 @@ jobs:
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "::set-output name=FIRMWARE::$(echo $PWD)"
           echo "::set-output name=COMPILE_STATUS::success"
+
       - name: Generate Firmware
         if: steps.compile.outputs.COMPILE_STATUS == 'success'
         id: generate
@@ -132,6 +138,7 @@ jobs:
           make target/install -j$(nproc) || make target/install -j1 V=s
           make checksum
           echo "::set-output name=GENERATE_STATUS::success"
+
       - name: Deploy Firmware & Nonshared Packages
         if: steps.generate.outputs.GENERATE_STATUS == 'success'
         run: |
@@ -143,6 +150,7 @@ jobs:
           cp -r $FIRMWARE /data/www/openwrt.cc/snapshots/targets/$TARGET
           mkdir -p $OPENWRTROOT/output/bin/targets/$TARGET
           cp -r $FIRMWARE $OPENWRTROOT/output/bin/targets/$TARGET
+
       - name: Compile Extra Packages
         if: steps.generate.outputs.GENERATE_STATUS == 'success'
         run: |
@@ -154,17 +162,6 @@ jobs:
           make diffconfig
           make package/compile -j$(nproc) IGNORE_ERRORS="y m" || make package/compile -j1 V=s IGNORE_ERRORS="y m"
           make package/index
-      - name: Deploy Extra Packages
-        if: steps.generate.outputs.GENERATE_STATUS == 'success'
-        run: |
-          mkdir -p /data/www/openwrt.cc/archive/$(date +'%Y-%m-%d')/packages
-          mkdir -p /data/www/openwrt.cc/snapshots/packages
-          cd $OPENWRTROOT
-          cp -r bin/packages/$PLATFORM /data/www/openwrt.cc/archive/$(date +'%Y-%m-%d')/packages
-          rm -rf /data/www/openwrt.cc/snapshots/packages/$PLATFORM
-          cp -r bin/packages/$PLATFORM /data/www/openwrt.cc/snapshots/packages
-          mkdir -p $OPENWRTROOT/output/bin/packages
-          cp -r bin/packages/$PLATFORM $OPENWRTROOT/output/bin/packages
 
   Upload:
     needs: [Build]
@@ -181,24 +178,13 @@ jobs:
           echo "SUBTARGET=$(echo '${{needs.Build.outputs.SUBTARGET}}')" >> $GITHUB_ENV
           echo "GENERATE_STATUS=$(echo '${{needs.Build.outputs.GENERATE_STATUS}}')" >> $GITHUB_ENV
 
-      - name: Organize Files
-        id: organize
-        if: env.GENERATE_STATUS == 'success'
-        run: |
-          curl -sL https://git.io/file-transfer | bash -s beta
-          sudo mv transfer /usr/bin
-          sudo chmod +x /usr/bin/transfer
-          cd $OPENWRTROOT/bin/targets/$TARGET/$SUBTARGET
-          echo "FIRMWARE=$PWD" >> $GITHUB_ENV
-          rm -rf packages
-          df -hT $PWD
-          echo "::set-output name=ORGANIZE_STATUS::success"
       - name: Upload Firmware To CowTransfer
         if: steps.organize.outputs.ORGANIZE_STATUS == 'success' && env.UPLOAD_COWTRANSFER == 'true'
         run: |
           cd $OPENWRTROOT
           transfer cow --block 2621440 -s -p 64 --no-progress ${FIRMWARE} 2>&1 | tee cowtransfer.log
           echo "::warning file=Firmware-Cowtransfer.com::$(cat cowtransfer.log | grep https)"
+
       - name: Upload Firmware To WeTransfer
         if: steps.organize.outputs.ORGANIZE_STATUS == 'success' && env.UPLOAD_WETRANSFER == 'true'
         run: |
