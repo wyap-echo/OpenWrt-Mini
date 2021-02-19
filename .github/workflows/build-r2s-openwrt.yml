@@ -21,7 +21,6 @@ env:
   REPO_BRANCH: openwrt-18.06-k5.4
   CONFIG_FILE: config/rockchip/r2s-openwrt-target.config
   DIY_SH: scripts/project-openwrt.sh
-  UPLOAD_RCLONE: true
   UPLOAD_WETRANSFER: true
   UPLOAD_COWTRANSFER: true
 
@@ -73,14 +72,14 @@ jobs:
           chmod +x scripts/*.sh
           cd $OPENWRTROOT
           ../$DIY_SH
-          ../scripts/preset-clash-core.sh armv8
           ../scripts/preset-terminal-tools.sh
 
       - name: Download All Packages
         id: package
         run: |
           cd $OPENWRTROOT
-          echo "CONFIG_ALL=y" >> .config
+          cp $CONFIG_FILE $OPENWRTROOT/.config
+          cat config/firmware-extra.config >> $OPENWRTROOT/.config
           make defconfig
           echo -e "$(nproc) threads download"
           make download -j$(nproc)
