@@ -98,7 +98,12 @@ jobs:
           cd $OPENWRTROOT
           make defconfig
           echo -e "$(nproc) threads compile"
-          make -j$(nproc) || make -j1 || make -j1 V=s
+          make tools/compile -j$(nproc) || make tools/compile -j1 V=s
+          make toolchain/compile -j$(nproc) || make toolchain/compile -j1 V=s
+          make target/compile -j$(nproc) || make target/compile -j1 V=s IGNORE_ERRORS=1
+          make diffconfig
+          make package/compile -j$(nproc) IGNORE_ERRORS="y m" || make package/compile -j1 V=s IGNORE_ERRORS="y m"
+          make package/index
           cd $OPENWRTROOT/bin/packages/*
           PLATFORM=$(basename `pwd`)
           echo "PLATFORM=$PLATFORM" >> $GITHUB_ENV
@@ -114,27 +119,6 @@ jobs:
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "::set-output name=FIRMWARE::$(echo $PWD)"
           echo "::set-output name=COMPILE_STATUS::success"
-
-      - name: Generate Firmware
-        if: steps.compile.outputs.COMPILE_STATUS == 'success'
-        id: generate
-        run: |
-          cd data/opkg
-          sed -i "s/subtarget/$SUBTARGET/g" distfeeds.conf
-          sed -i "s/target\//$TARGET\//g" distfeeds.conf
-          sed -i "s/platform/$PLATFORM/g" distfeeds.conf
-          sed -i "s/date/$(date +'%Y-%m-%d')/g" distfeeds.conf
-          cd $OPENWRTROOT
-          mkdir -p files/etc/opkg
-          cp ../data/opkg/distfeeds.conf files/etc/opkg/distfeeds.conf
-          mkdir -p files/etc/uci-defaults/
-          cp ../scripts/init-settings.sh files/etc/uci-defaults/99-init-settings
-          mkdir -p files/bin
-          cp ../scripts/ipv6-helper.sh files/bin/ipv6-helper
-          make package/install -j$(nproc) || make package/install -j1 V=s
-          make target/install -j$(nproc) || make target/install -j1 V=s
-          make checksum
-          echo "::set-output name=GENERATE_STATUS::success"
 
   Upload:
     needs: [Build]
