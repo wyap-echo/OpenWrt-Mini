@@ -136,18 +136,6 @@ jobs:
           make checksum
           echo "::set-output name=GENERATE_STATUS::success"
 
-      - name: Compile Extra Packages
-        if: steps.generate.outputs.GENERATE_STATUS == 'success'
-        run: |
-          cd $OPENWRTROOT
-          rm -f .config*
-          cp ../$CONFIG_FILE ./.config
-          cat ../config/packages-extra.config >> $OPENWRTROOT/.config
-          make defconfig
-          make diffconfig
-          make package/compile -j$(nproc) IGNORE_ERRORS="y m" || make package/compile -j1 V=s IGNORE_ERRORS="y m"
-          make package/index
-
   Upload:
     needs: [Build]
     runs-on: ubuntu-18.04
