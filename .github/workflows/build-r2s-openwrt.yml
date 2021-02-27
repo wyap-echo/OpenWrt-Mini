@@ -82,6 +82,12 @@ jobs:
           ../$DIY_SH
           ../scripts/preset-terminal-tools.sh
           
+      - name: SSH connection to Actions
+        uses: P3TERX/ssh2actions@v1.0.0
+        if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
+        env:
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
       - name: Download All Packages
         id: package
@@ -150,13 +156,6 @@ jobs:
         run: |
           mkdir -p $OPENWRTROOT/output/bin/targets/$TARGET
           cp -r $FIRMWARE $OPENWRTROOT/output/bin/targets/$TARGET
-          
-      - name: SSH connection to Actions
-        uses: P3TERX/ssh2actions@v1.0.0
-        if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
-        env:
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           
       - name: Compress Bin Folder
         if: steps.generate.outputs.GENERATE_STATUS == 'success'
