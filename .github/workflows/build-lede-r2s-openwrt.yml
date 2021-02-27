@@ -25,6 +25,7 @@ env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
   CONFIG_FILE: config/rockchip/r2s-lede-target.config
+  DIY_P1_SH: diy-part1.sh
   DIY_SH: scripts/project-lede-openwrt.sh
   UPLOAD_WETRANSFER: true
   UPLOAD_COWTRANSFER: true
@@ -60,11 +61,16 @@ jobs:
           df -hT $PWD
           git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
 
+      - name: Load custom change
+        run: |
+          chmod +x $DIY_P1_SH
+          cd openwrt
+          $GITHUB_WORKSPACE/$DIY_P1_SH
+
       - name: Update Feeds
         id: update
         run: |
           cd openwrt
-          sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
           echo "OPENWRTROOT=$PWD" >> $GITHUB_ENV
           ./scripts/feeds update -a
 
