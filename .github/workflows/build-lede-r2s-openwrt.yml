@@ -6,7 +6,7 @@
 # Blog: https://p3terx.com
 #=================================================
 
-name: Build NanoPi R2S OpenWrt
+name: Build NanoPi Lede-R2S OpenWrt
 
 on:
   repository_dispatch:
