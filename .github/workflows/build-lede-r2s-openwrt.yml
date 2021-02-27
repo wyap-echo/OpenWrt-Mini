@@ -64,6 +64,7 @@ jobs:
         id: update
         run: |
           cd openwrt
+          sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
           echo "OPENWRTROOT=$PWD" >> $GITHUB_ENV
           ./scripts/feeds update -a
 
