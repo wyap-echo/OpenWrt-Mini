@@ -24,7 +24,7 @@ on:
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
-  CONFIG_FILE: config/rockchip/nanopi-r2s-lede.config
+  CONFIG_FILE: config/rockchip/r2s-lede-target.config
   DIY_SH: scripts/project-openwrt.sh
   UPLOAD_WETRANSFER: true
   UPLOAD_COWTRANSFER: true
@@ -77,7 +77,7 @@ jobs:
         run: |
           [ -e files ] && mv files $OPENWRTROOT/files
           cp $CONFIG_FILE $OPENWRTROOT/.config
-          cat config/rockchip/nanopi-r2s-lede.config >> $OPENWRTROOT/.config
+          cat config/firmware-lede-extra.config >> $OPENWRTROOT/.config
           chmod +x scripts/*.sh
           cd $OPENWRTROOT
           ../$DIY_SH
@@ -105,7 +105,7 @@ jobs:
         run: |
           rm -f $OPENWRTROOT/.config*
           cp $CONFIG_FILE $OPENWRTROOT/.config
-          cat config/rockchip/nanopi-r2s-lede.config >> $OPENWRTROOT/.config
+          cat config/firmware-lede-extra.config >> $OPENWRTROOT/.config
           cd $OPENWRTROOT
           make defconfig
           echo -e "$(nproc) threads compile"
