@@ -26,9 +26,9 @@ make && sudo make install
 popd
 
 # Rename hostname to OpenWrt
-pushd package/base-files/files/bin
-sed -i 's/ImmortalWrt/OpenWrt/g' config_generate
-popd
+#pushd package/base-files/files/bin
+#sed -i 's/ImmortalWrt/OpenWrt/g' config_generate
+#popd
 
 # Change default shell to zsh
 sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
