@@ -30,6 +30,9 @@ popd
 #sed -i 's/ImmortalWrt/OpenWrt/g' config_generate
 #popd
 
+# Fix SDK
+sed -i '/$(SDK_BUILD_DIR)\/$(STAGING_SUBDIR_HOST)\/usr\/bin/d;/LICENSE/d' target/sdk/Makefile
+
 # Change default shell to zsh
 sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 
