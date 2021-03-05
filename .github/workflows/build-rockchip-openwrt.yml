@@ -74,7 +74,10 @@ jobs:
 
       - name: Load custom change
         run: |
-          cd openwrt/package/network/services
+          cd openwrt
+          sed -i 's/KERNEL_PATCHVER:=5.10/KERNEL_PATCHVER:=5.3/g' ./target/linux/rockchip/Makefile
+          svn co https://github.com/coolsnowwolf/lede/master/package/lean/luci-app-cifsd
+          cd package/network/services
           git clone https://github.com/linkease/ddnsto-openwrt.git
 
       - name: Load Custom Configuration
