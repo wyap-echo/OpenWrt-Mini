@@ -76,8 +76,9 @@ jobs:
         run: |
           cd openwrt
           sed -i 's/KERNEL_PATCHVER:=5.10/KERNEL_PATCHVER:=5.4/g' ./target/linux/rockchip/Makefile
+          cd package
           svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-cifsd
-          cd package/network/services
+          cd network/services
           git clone https://github.com/linkease/ddnsto-openwrt.git
 
       - name: Load Custom Configuration
