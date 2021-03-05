@@ -72,6 +72,11 @@ jobs:
           cd $OPENWRTROOT
           ./scripts/feeds install -a
 
+      - name: Load custom change
+        run: |
+          cd openwrt/package/network/services
+          git clone https://github.com/linkease/ddnsto-openwrt.git
+
       - name: Load Custom Configuration
         run: |
           [ -e files ] && mv files $OPENWRTROOT/files
