@@ -77,7 +77,11 @@ jobs:
           cd openwrt
           sed -i 's/KERNEL_PATCHVER:=5.10/KERNEL_PATCHVER:=5.4/g' ./target/linux/rockchip/Makefile
           cd package
+          rm -rf ctcgfw/luci-app-dockerman
+          rm -rf ctcgfw/luci-app-docker
           svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-cifsd
+          svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-docker
+          svn co https://github.com/lisaac/luci-app-dockerman/trunk/applications/luci-app-dockerman
           svn co https://github.com/linkease/ddnsto-openwrt/trunk/luci-app-ddnsto
           cd utils
           svn co https://github.com/coolsnowwolf/packages/trunk/utils/docker-ce
