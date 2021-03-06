@@ -20,12 +20,12 @@ sed -i '/mt7662u_rom_patch.bin/a\\techo mt76-usb disable_usb_sg=1 > $\(1\)\/etc\
 popd
 
 # Change dependences from dockerd to docker-ce for luci-app-docker & luci-app-dockerman
-pushd package/ctcgfw/luci-app-dockerman
-sed -i 's/docker +dockerd/docker-ce/g' Makefile
-popd
-pushd package/lean/luci-app-docker
-sed -i 's/docker +dockerd/docker-ce/g' Makefile
-popd
+#pushd package/ctcgfw/luci-app-dockerman
+#sed -i 's/docker +dockerd/docker-ce/g' Makefile
+#popd
+#pushd package/lean/luci-app-docker
+#sed -i 's/docker +dockerd/docker-ce/g' Makefile
+#popd
 
 # Add po2lmo
 git clone https://github.com/openwrt-dev/po2lmo.git
