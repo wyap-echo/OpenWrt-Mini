@@ -32,7 +32,7 @@ env:
 
 jobs:
   Build:
-    runs-on: opbuild
+    runs-on: op-build
 
     outputs:
       PLATFORM: ${{ steps.compile.outputs.PLATFORM }}
