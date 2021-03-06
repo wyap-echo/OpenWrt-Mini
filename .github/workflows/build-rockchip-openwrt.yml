@@ -78,8 +78,9 @@ jobs:
           sed -i 's/KERNEL_PATCHVER:=5.10/KERNEL_PATCHVER:=5.4/g' ./target/linux/rockchip/Makefile
           cd package
           svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-cifsd
+          svn co https://github.com/linkease/ddnsto-openwrt/trunk/luci-app-ddnsto
           cd network/services
-          git clone https://github.com/linkease/ddnsto-openwrt.git
+          svn co https://github.com/linkease/ddnsto-openwrt/trunk/ddnsto
 
       - name: Load Custom Configuration
         run: |
