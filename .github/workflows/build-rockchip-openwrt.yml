@@ -79,7 +79,9 @@ jobs:
           cd package
           svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-cifsd
           svn co https://github.com/linkease/ddnsto-openwrt/trunk/luci-app-ddnsto
-          cd network/services
+          cd utils
+          svn co https://github.com/coolsnowwolf/packages/trunk/utils/docker-ce
+          cd .. && cd network/services
           svn co https://github.com/linkease/ddnsto-openwrt/trunk/ddnsto
 
       - name: Load Custom Configuration
