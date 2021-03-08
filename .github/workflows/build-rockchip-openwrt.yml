@@ -32,7 +32,7 @@ env:
 
 jobs:
   Build:
-    runs-on: self-hosted
+    runs-on: ubuntu-18.04
 
     outputs:
       PLATFORM: ${{ steps.compile.outputs.PLATFORM }}
