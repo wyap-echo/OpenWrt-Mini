@@ -22,8 +22,8 @@ on:
 #    types: started
 
 env:
-  REPO_URL: https://github.com/project-openwrt/openwrt
-  REPO_BRANCH: openwrt-18.06-k5.4
+  REPO_URL: https://github.com/immortalwrt/immortalwrt
+  REPO_BRANCH: openwrt-21.02
   CONFIG_FILE: config/rockchip/r2s-openwrt-target.config
   DIY_SH: scripts/project-openwrt.sh
   UPLOAD_WETRANSFER: true
