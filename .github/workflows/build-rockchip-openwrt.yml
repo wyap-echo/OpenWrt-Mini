@@ -24,7 +24,7 @@ on:
 env:
   REPO_URL: https://github.com/project-openwrt/openwrt
   REPO_BRANCH: openwrt-18.06-k5.4
-  CONFIG_FILE: config/rockchip/r2s-openwrt-target.config
+  CONFIG_FILE: config/rockchip/r4s-openwrt-target.config
   DIY_SH: scripts/project-openwrt.sh
   UPLOAD_WETRANSFER: true
   UPLOAD_COWTRANSFER: true
