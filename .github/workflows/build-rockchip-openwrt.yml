@@ -32,7 +32,7 @@ env:
 
 jobs:
   Build:
-    runs-on: self-hosted
+    runs-on: ubuntu-18.04
 
     outputs:
       PLATFORM: ${{ steps.compile.outputs.PLATFORM }}
@@ -87,6 +87,8 @@ jobs:
           [ -e files ] && mv files $OPENWRTROOT/files
           cp $CONFIG_FILE $OPENWRTROOT/.config
           cat config/firmware-18.06-extra.config >> $OPENWRTROOT/.config
+          chmod +x files/etc/init.d/fa-rk3399-pwmfan
+          chmod +x files/usr/bin/start-rk3399-pwm-fan.sh
           chmod +x scripts/*.sh
           cd $OPENWRTROOT
           ../$DIY_SH
