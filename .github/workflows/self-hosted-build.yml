@@ -22,7 +22,7 @@ on:
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
   REPO_BRANCH: openwrt-21.02
-  CONFIG_FILE: config/rockchip/r4s-r20-openwrt.config
+  CONFIG_FILE: config/rockchip/r4s-r21-openwrt.config
   DIY_SH: scripts/project-openwrt.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
