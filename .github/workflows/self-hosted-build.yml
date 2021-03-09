@@ -24,7 +24,7 @@ on:
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
   REPO_BRANCH: openwrt-21.02
-  CONFIG_FILE: config/rockchip/r2s-openwrt-target.config
+  CONFIG_FILE: config/rockchip/r4s-openwrt-target.config
   DIY_SH: scripts/project-openwrt.sh
   UPLOAD_WETRANSFER: true
   UPLOAD_COWTRANSFER: true
@@ -86,9 +86,11 @@ jobs:
         run: |
           [ -e files ] && mv files $OPENWRTROOT/files
           cp $CONFIG_FILE $OPENWRTROOT/.config
-          cat config/firmware-extra.config >> $OPENWRTROOT/.config
+          cat config/firmware-18.06-extra.config >> $OPENWRTROOT/.config
           chmod +x scripts/*.sh
           cd $OPENWRTROOT
+          chmod +x files/etc/init.d/fa-rk3399-pwmfan
+          chmod +x files/usr/bin/start-rk3399-pwm-fan.sh
           ../$DIY_SH
           ../scripts/preset-terminal-tools.sh
           
@@ -114,7 +116,7 @@ jobs:
         run: |
           rm -f $OPENWRTROOT/.config*
           cp $CONFIG_FILE $OPENWRTROOT/.config
-          cat config/firmware-extra.config >> $OPENWRTROOT/.config
+          cat config/firmware-18.06-extra.config >> $OPENWRTROOT/.config
           cd $OPENWRTROOT
           make defconfig
           echo -e "$(nproc) threads compile"
