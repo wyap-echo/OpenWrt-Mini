@@ -28,12 +28,12 @@ popd
 #popd
 
 # Add dependence dockerd for luci-app-docker & luci-app-dockerman
-pushd package/ctcgfw/luci-app-dockerman
-sed -i 's/ttyd/ttyd +dockerd/g' Makefile
-popd
-pushd package/lean/luci-app-docker
-sed -i 's/fdisk/fdisk +dockerd/g' Makefile
-popd
+#pushd package/ctcgfw/luci-app-dockerman
+#sed -i 's/ttyd/ttyd +dockerd/g' Makefile
+#popd
+#pushd package/lean/luci-app-docker
+#sed -i 's/fdisk/fdisk +dockerd/g' Makefile
+#popd
 
 # Add po2lmo
 git clone https://github.com/openwrt-dev/po2lmo.git
