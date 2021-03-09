@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: Build Rockchip R20 OpenWrt
+name: Build Rockchip R20-OpenWrt
 
 on:
   repository_dispatch:
@@ -23,8 +23,8 @@ env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
   REPO_BRANCH: openwrt-18.06-k5.4
   CONFIG_FILE: config/rockchip/r4s-r20-openwrt.config
-  DIY_P1_SH: diy-part3.sh
-  DIY_P2_SH: diy-part4.sh
+  DIY_P1_SH: diy-part1.sh
+  DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
   UPLOAD_COWTRANSFER: true
