@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: Build CTCGFW-r4s-full-OpenWrt
+name: Build Immortalwrt-R20-OpenWrt
 
 on:
   repository_dispatch:
@@ -22,8 +22,7 @@ on:
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
   REPO_BRANCH: openwrt-18.06-k5.4
-  FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: configs/nanopi-r4s-full-CTCGFW.config
+  CONFIG_FILE: config/rockchip/r4s-r20-openwrt.config
   DIY_P1_SH: diy-part3.sh
   DIY_P2_SH: diy-part4.sh
   UPLOAD_BIN_DIR: false
@@ -35,7 +34,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: self-hosted
 
     steps:
     - name: Checkout
@@ -73,18 +72,25 @@ jobs:
 
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
-
-#    - name: Install patch
-#      run: |
-#          cd openwrt
-#          patch -p1 < "${GITHUB_WORKSPACE}/patches/1806-modify_for_r4s.patch"
-          
+      
+    - name: Load custom change
+      run: |
+        cd openwrt
+        sed -i 's/KERNEL_PATCHVER:=5.10/KERNEL_PATCHVER:=5.4/g' ./target/linux/rockchip/Makefile
+        cd package
+        svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-cifsd
+        svn co https://github.com/linkease/ddnsto-openwrt/trunk/luci-app-ddnsto
+        cd network/services
+        svn co https://github.com/linkease/ddnsto-openwrt/trunk/ddnsto
+  
     - name: Load custom configuration
       run: |
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
         chmod +x $DIY_P2_SH
         cd openwrt
+        chmod +x files/etc/init.d/fa-rk3399-pwmfan
+        chmod +x files/usr/bin/start-rk3399-pwm-fan.sh
         $GITHUB_WORKSPACE/$DIY_P2_SH
 
     - name: SSH connection to Actions
