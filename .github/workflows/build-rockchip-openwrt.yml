@@ -86,7 +86,7 @@ jobs:
         run: |
           [ -e files ] && mv files $OPENWRTROOT/files
           cp $CONFIG_FILE $OPENWRTROOT/.config
-          cat config/firmware-extra.config >> $OPENWRTROOT/.config
+          cat config/firmware-18.06-extra.config >> $OPENWRTROOT/.config
           chmod +x scripts/*.sh
           cd $OPENWRTROOT
           ../$DIY_SH
@@ -114,7 +114,7 @@ jobs:
         run: |
           rm -f $OPENWRTROOT/.config*
           cp $CONFIG_FILE $OPENWRTROOT/.config
-          cat config/firmware-extra.config >> $OPENWRTROOT/.config
+          cat config/firmware-18.06-extra.config >> $OPENWRTROOT/.config
           cd $OPENWRTROOT
           make defconfig
           echo -e "$(nproc) threads compile"
