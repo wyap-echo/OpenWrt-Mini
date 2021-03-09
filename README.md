@@ -1,7 +1,7 @@
 # OpenWrt-Mini
 
 ## 基于 [SuLingGG/OpenWrt-Mini](https://github.com/SuLingGG/OpenWrt-Mini) 项目修改而来 加入了自己常用的插件 
--例如 R4S的风扇自动控制脚本 
+- 例如 R4S的风扇自动控制脚本 
 ## 项目特色
 
 - 项目基于 [immortalwrt/immortalwrt](https://github.com/immortalwrt/immortalwrt) openwrt-18.06-k5.4 分支，内核版本为 5.4.x，LuCI 版本为 LuCI 18.06。
