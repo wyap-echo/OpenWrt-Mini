@@ -23,8 +23,7 @@ env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
   REPO_BRANCH: openwrt-18.06-k5.4
   CONFIG_FILE: config/rockchip/r4s-r20-openwrt.config
-  DIY_P1_SH: diy-part1.sh
-  DIY_P2_SH: diy-part2.sh
+  DIY_SH: scripts/project-openwrt.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
   UPLOAD_COWTRANSFER: true
@@ -87,11 +86,11 @@ jobs:
       run: |
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        chmod +x $DIY_P2_SH
+        chmod +x scripts/*.sh
         cd openwrt
         chmod +x files/etc/init.d/fa-rk3399-pwmfan
         chmod +x files/usr/bin/start-rk3399-pwm-fan.sh
-        $GITHUB_WORKSPACE/$DIY_P2_SH
+        $GITHUB_WORKSPACE/$DIY_SH
 
     - name: SSH connection to Actions
       uses: P3TERX/ssh2actions@v1.0.0
