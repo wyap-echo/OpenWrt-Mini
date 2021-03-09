@@ -66,9 +66,10 @@ jobs:
           sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
           sed -i '$a src-git jerryk https://github.com/jerrykuku/openwrt-package' feeds.conf.default
           cd package
-          git clone https://github.com/lisaac/luci-app-dockerman
+          svn co https://github.com/lisaac/luci-app-dockerman/trunk/applications/luci-app-dockerman          
+          svn co https://github.com/linkease/ddnsto-openwrt/trunk/luci-app-ddnsto
           cd network/services
-          git clone https://github.com/linkease/ddnsto-openwrt.git
+          svn co https://github.com/linkease/ddnsto-openwrt/trunk/ddnsto
           
       - name: Update Feeds
         id: update
