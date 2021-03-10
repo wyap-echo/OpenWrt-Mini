@@ -69,11 +69,11 @@ jobs:
     - name: Load custom change
       run: |
         cd openwrt/package
-        svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-cifsd
         svn co https://github.com/linkease/ddnsto-openwrt/trunk/luci-app-ddnsto
         cd network/services
         svn co https://github.com/linkease/ddnsto-openwrt/trunk/ddnsto
 #       sed -i 's/KERNEL_PATCHVER:=5.10/KERNEL_PATCHVER:=5.4/g' ./target/linux/rockchip/Makefile
+#       svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/luci-app-cifsd
 
     - name: Load custom configuration
       run: |
