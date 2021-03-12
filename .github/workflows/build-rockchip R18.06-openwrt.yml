@@ -88,12 +88,12 @@ jobs:
           cat config/firmware-extra.config >> $OPENWRTROOT/.config
           chmod +x scripts/*.sh
           cd $OPENWRTROOT
-          chmod +x files/etc/config/firewall
           chmod +x files/etc/init.d/fa-rk3399-pwmfan
           chmod +x files/usr/bin/start-rk3399-pwm-fan.sh
           ../$DIY_SH
           ../scripts/preset-terminal-tools.sh
-          
+#          chmod +x files/etc/config/firewall      
+
       - name: SSH connection to Actions
         uses: P3TERX/ssh2actions@v1.0.0
         if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
